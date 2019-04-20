@@ -4,43 +4,50 @@
 #include <string>
 #include <iostream>
 
+#define TAM 3
+
 using namespace std;
 
 //Função principal
 int main(){
 
-    //Definindo variaveis
-    int a;
-    float b;
-    char c;
-    bool d;
+    //Definindo vetor
+    int vetor[TAM] = {5,10,15},i;
 
-    //Atribuindo valores
-    a = 2;
-    b = 2.5;
-    c = 'x';
-    d = true;
+    //Imprimindo vetor utilizando for c e c++
+    for(i = 0;i < TAM;i++){
+        printf("%d\n", vetor[i]);
+        //cout << vetor[i] << "\n";
+    }
 
-    //Imprimindo na tela
-    printf("Valor : %d\n", a);
-    printf("Valor : %.2f\n", b);
-    printf("Valor : %c\n", c);
-    printf("Valor : %d\n", d);
+    //atribuindo valor ao vetor
+    vetor[0] = 10;
+    vetor[1] = 20;
+    vetor[2] = 30;
 
-    //Imprimindo com C++
-    cout << "Valor : " << a << "\n";
+    //Zerando incremento
+    i = 0;
 
-    //Lendo variaveis
-    //scanf("%d", &a);
-    //scanf("%f", &b);
-    //scanf("%c", &c);
+    //Imprimindo utilizando while
+    while(i < TAM){
+        printf("%d\n", vetor[i]);
+        i++;
+    }
 
-    //Lendo com C++
-    cin >> a;
+    //Zerando incremento e adicionando
+    i = 0;
+    int j;
 
-    //Imprimindo com C++
-    cout << "Valor : " << a << "\n";
+    //Definindo matriz
+    int matriz[TAM][TAM] = {1,2,3,4,5,6,7,8,9};
 
+    //Imprimindo matriz com for
+    for(i = 0;i < TAM;i++){
+        for(j = 0;j < TAM;j++){
+        printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
     //pausa o programa após executar
     system("pause");
 

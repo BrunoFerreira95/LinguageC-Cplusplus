@@ -33,7 +33,7 @@ int main()
         printf("8.  Sair\n");
 
         scanf("%d", &continuar);
-        system("clear");
+        system("cls");
 
         switch(continuar)
         {
