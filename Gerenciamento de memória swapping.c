@@ -1,26 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void menzerar(int n, int* v);
-void alocarmenprinc(int n, int*v);
-int swap(int n, int* v, int* v1);
-void listar(int n, int* v, char* frase);
+//Prototipo das funções
+int* alocaVetor(int tamanho);
+void memoriazerar(int tamanho, int* v);
+void alocarmemoriaprincipal(int tamanho, int*v);
+int swap(int tamanho, int* v, int* v1);
+void listar(int tamanho, int* v, char* frase);
+
 int main()
 {
-	int n,swapteste;
-	int continuar=1;
+    //Definindo variaveis
+	int tamanho,validacao,continuar = 1, *vetorprincipal, *vetorsegundario;
+
+	//Lendo o tamanho da memoria
 	printf("Digite o tamanho da memoria:");
-	scanf("%d", &n);
-	int v[n],v1[n];
-    menzerar(n,v);
-    menzerar(n,v1);
-    char menprin[]="Memoria Principal";
-    char mensegun[]="Memoria Segundaria";
+	scanf("%d", &tamanho);
+
+	//Alocando Dinamicamente o espaco das memorias
+	vetorprincipal = alocaVetor(tamanho);
+	vetorsegundario = alocaVetor(tamanho);
+
+	//Zerando a memoria
+    menzerar(tamanho,vetorprincipal);
+    menzerar(tamanho,vetorsegundario);
+
+    //Declarando mensagem de memoria
+    char memoriaprincipal[]="Memoria Principal";
+    char memoriasegundaria[]="Memoria Segundaria";
+
+    //Inicio do menu com laço
 	do
     {
+        //Painel do menu
         printf("----------------------------------------------\n");
         printf("\n\tGerenciamento de memoria swapping\n\n");
-        printf("\tTamanho de Memoria: %d\n", n);
+        printf("\tTamanho de Memoria: %d\n", tamanho);
         printf("----------------------------------------------\n");
         printf("1.	Limpar a memoria principal\n");
         printf("2.	Limpar a memoria secundoria\n");
@@ -32,89 +47,155 @@ int main()
         printf("----------------------------------------------\n");
         printf("8.  Sair\n");
 
+        //Leitura da opcao do menu
         scanf("%d", &continuar);
+
+        //Limpar tela
         system("cls");
 
+        //Condicional para selecionar
         switch(continuar)
         {
             case 1:
-                menzerar(n,v);
+
+                //Chama a fução para zerar a memoria principal
+                menzerar(tamanho,vetorprincipal);
+
                 break;
             case 2:
-                menzerar(n,v1);
+
+                //Chama a função para zerar a memoria segundaria
+                menzerar(tamanho,vetorsegundario);
+
                 break;
             case 3:
-                alocarmenprinc(n,v);
+
+                //Função que aloca em um endereço da memoria principal
+                validacao = alocarmenprinc(tamanho,vetorprincipal);
+
+                //Confere se a espaço na memoria
+                if(validacao==0)
+                    printf("\n%s esta cheia.\n",memoriaprincipal);
+
                 break;
             case 4:
-                swapteste = swap(n,v,v1);
-                if(swapteste==0)
-                    printf("\n%s esta cheia.\n",mensegun);
+
+                //Realiza o swap out
+                validacao = swap(tamanho,vetorprincipal,vetorsegundario);
+
+                //Confere se a espaço na memoria
+                if(validacao==0)
+                    printf("\n%s esta cheia.\n",memoriasegundaria);
+
                 break;
             case 5:
-                swapteste = swap(n,v1,v);
-                if(swapteste==0)
-                    printf("\n%s esta cheia.\n",menprin);
+
+                //Realiza o swap in
+                validacao = swap(tamanho,vetorsegundario,vetorprincipal);
+
+                //Confere se a espaço na memoria
+                if(validacao==0)
+                    printf("\n%s esta cheia.\n",memoriaprincipal);
+
                 break;
             case 6:
-                listar(n,v,menprin);
+
+                //Lista a memoria principal
+                listar(tamanho,vetorprincipal,memoriaprincipal);
+
                 break;
             case 7:
-                listar(n,v1,mensegun);
+
+                //Lista a memoria segundaria
+                listar(tamanho,vetorsegundario,memoriasegundaria);
+
                 break;
             case 8:
+
+                //Sair do programa
                 exit(0);
+
                 break;
 
             default:
+
+                //Mensagem casa tenho um opcao do menu invalida
                 printf("Digite uma opcao valida\n");
         }
+
+    //Continua a laço
     } while(continuar);
+
+    //Retorna zero a função principal
+    return 0;
 }
-void menzerar(int n, int* v)
+
+//Função de alucao dinamica para o tamanho do vetor
+int* alocaVetor(int tamanho){
+    //É cria um ponteiro auxiliar
+    int *aux;
+
+    //Alocação dinamica de memoria
+    aux = (int*) malloc(tamanho * sizeof(int));
+
+    //Retorna o ponteiro que aponta para a primeira posição de momoria do vetor alocado
+    return aux;
+
+}
+
+//Função para zerar o vetor
+void menzerar(int tamanho, int* vetor)
 {
 	int i;
-	for(i=0;i<n;i++)
-		v[i]=0;
+	for(i = 0; i < tamanho; i++)
+		vetor[i] = 0;
 }
-void alocarmenprinc(int n, int* v)
+
+//Função para alucar na memoria principal
+int alocarmenprinc(int tamanho, int* vetor)
 {
-	int i,x;
+	int i, x, validacao = 0;
 	printf("Codigo para alocar:");
 	scanf("%d", &x);
-	for(i=0;i<n;i++)
-		if(v[i]==0)
+	for(i=0;i<tamanho;i++)
+		if(vetor[i]==0)
 		{
-			v[i]=x;
+			vetor[i]=x;
+			validacao = 1;
 			break;
 		}
+    return validacao;
 }
-int swap(int n, int* v, int* v1)
+
+//Função para fazer swap out ou in
+int swap(int tamanho, int* vetor, int* vetorsegundario)
 {
-	int i,j,k,x,aux,result=0;
+	int i, j, k, x, aux, validacao = 0;
 	printf("Codigo do processo:");
 	scanf("%d",&x);
-	for(i=0;i<n;i++)
-	    if(v[i]==x)
+	for(i=0;i<tamanho;i++)
+	    if(vetor[i]==x)
 	    {
-	        aux=v[i];
-	        for(j=0;j<n;j++)
-        	    if(v1[j]==0)
+	        aux = vetor[i];
+	        for(j = 0; j < tamanho; j++)
+        	    if(vetorsegundario[j] == 0)
         	    {
-        	        v1[j]=aux;
-        	        v[i]=0;
-        	        result=1;
+        	        vetorsegundario[j] = aux;
+        	        vetor[i] = 0;
+        	        validacao = 1;
         	        break;
         	    }
 	        break;
 	    }
-    return result;
+    return validacao;
 }
-void listar(int n, int* v, char* frase)
+
+//Função para lista a memoria
+void listar(int tamanho, int* vetor, char* frase)
 {
 	int i;
-	for(i=0;i<n;i++)
+	for(i = 0; i < tamanho; i++)
 	{
-		printf("%s [%d] = %d\n",frase,i,v[i]);
+		printf("%s [%d] = %d\n",frase, i, vetor[i]);
 	}
 }
