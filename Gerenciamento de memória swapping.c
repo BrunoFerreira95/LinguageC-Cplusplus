@@ -111,6 +111,9 @@ int main()
 
                 break;
             case 8:
+                //Liberando memoria
+                free( vetorprincipal );
+                free( vetorsegundario );
 
                 //Sair do programa
                 exit(0);
